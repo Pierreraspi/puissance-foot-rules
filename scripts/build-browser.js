@@ -11,7 +11,10 @@ const source = fs.readFileSync(sourcePath, 'utf8')
   .replace(/^'use strict';\s*/, '')
   .replace(/module\.exports = Object\.freeze\(/, 'return Object.freeze(');
 
-const bundle = `/* Puissance Foot Rules v1.0.0 - generated file */\n` +
+const packageJson = JSON.parse(
+  fs.readFileSync(path.join(root, 'package.json'), 'utf8')
+);
+const bundle = `/* Puissance Foot Rules v${packageJson.version} - generated file */\n` +
   `(function (root, factory) {\n` +
   `  root.PuissanceFootRules = factory();\n` +
   `})(typeof globalThis !== 'undefined' ? globalThis : window, function () {\n` +

@@ -1,6 +1,6 @@
 {
   "name": "@pierreraspi/puissance-foot-rules",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Moteur de règles partagé pour Puissance Foot",
   "main": "src/index.js",
   "browser": "dist/puissance-foot-rules.browser.js",

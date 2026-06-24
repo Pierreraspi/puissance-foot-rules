@@ -55,6 +55,36 @@ test('moves cannot capture or move opponent pieces', () => {
   }, 'white').reason, 'occupied_destination');
 });
 
+test('only the correct king may enter each goal area', () => {
+  const board = createInitialBoard();
+  board[7][0] = '';
+  board[1][3] = '♖';
+  assert.equal(validateMove(board, {
+    from: { row: 1, col: 3 },
+    to: { row: 0, col: 3 }
+  }, 'white').reason, 'restricted_goal');
+
+  board[0][4] = '';
+  board[1][4] = '♚';
+  assert.equal(validateMove(board, {
+    from: { row: 1, col: 4 },
+    to: { row: 0, col: 4 }
+  }, 'black').valid, true);
+});
+
+test('tutorial and AI simulation boards may contain fewer pieces', () => {
+  const board = Array.from({ length: 8 }, () => Array(8).fill(''));
+  board[7][4] = '♔';
+  board[0][4] = '♚';
+  board[5][2] = '♘';
+
+  assert.equal(isValidBoard(board), true);
+  assert.equal(validateMove(board, {
+    from: { row: 5, col: 2 },
+    to: { row: 3, col: 3 }
+  }, 'white').valid, true);
+});
+
 test('applyMove does not mutate the source board', () => {
   const board = createInitialBoard();
   const next = applyMove(board, {

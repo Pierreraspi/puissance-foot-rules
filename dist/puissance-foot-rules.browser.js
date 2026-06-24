@@ -1,4 +1,4 @@
-/* Puissance Foot Rules v1.0.0 - generated file */
+/* Puissance Foot Rules v1.0.1 - generated file */
 (function (root, factory) {
   root.PuissanceFootRules = factory();
 })(typeof globalThis !== 'undefined' ? globalThis : window, function () {
@@ -73,29 +73,15 @@ function isValidBoard(board) {
   if (!Array.isArray(board) || board.length !== BOARD_SIZE) return false;
 
   const allowed = new Set(['', ...WHITE_PIECES, ...BLACK_PIECES]);
-  const expectedCounts = new Map([
-    [PIECES.WHITE_KING, 1],
-    [PIECES.WHITE_ROOK, 2],
-    [PIECES.WHITE_BISHOP, 2],
-    [PIECES.WHITE_KNIGHT, 2],
-    [PIECES.BLACK_KING, 1],
-    [PIECES.BLACK_ROOK, 2],
-    [PIECES.BLACK_BISHOP, 2],
-    [PIECES.BLACK_KNIGHT, 2]
-  ]);
-  const counts = new Map([...expectedCounts.keys()].map((piece) => [piece, 0]));
 
   for (const row of board) {
     if (!Array.isArray(row) || row.length !== BOARD_SIZE) return false;
     for (const piece of row) {
       if (!allowed.has(piece)) return false;
-      if (piece) counts.set(piece, counts.get(piece) + 1);
     }
   }
 
-  return [...expectedCounts].every(
-    ([piece, expectedCount]) => counts.get(piece) === expectedCount
-  );
+  return true;
 }
 
 function isPathClear(board, fromRow, fromCol, toRow, toCol) {
@@ -167,6 +153,20 @@ function validateMove(board, move, expectedPlayer) {
 
   if (board[to.row][to.col] !== '') {
     return { valid: false, reason: 'occupied_destination' };
+  }
+
+  for (const [goalRow, goalCol] of WIN_TARGETS.white) {
+    if (to.row === goalRow && to.col === goalCol &&
+        piece !== PIECES.BLACK_KING) {
+      return { valid: false, reason: 'restricted_goal' };
+    }
+  }
+
+  for (const [goalRow, goalCol] of WIN_TARGETS.black) {
+    if (to.row === goalRow && to.col === goalCol &&
+        piece !== PIECES.WHITE_KING) {
+      return { valid: false, reason: 'restricted_goal' };
+    }
   }
 
   if (!hasValidGeometry(board, from.row, from.col, to.row, to.col)) {
