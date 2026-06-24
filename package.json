@@ -1,0 +1,22 @@
+{
+  "name": "@pierreraspi/puissance-foot-rules",
+  "version": "1.0.0",
+  "description": "Moteur de règles partagé pour Puissance Foot",
+  "main": "src/index.js",
+  "browser": "dist/puissance-foot-rules.browser.js",
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build-browser.js",
+    "sync:site": "node scripts/sync-site.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
